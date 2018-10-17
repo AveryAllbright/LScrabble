@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Emily Irish Dixon : LScrabble</title>
     <link rel="stylesheet" type="text/css" href="app.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
 
-    <a class="trigger_popup_fricc">Click here to show the popup</a>
 
-<div class="hover_bkgr_fricc">
-    <span class="helper"></span>
-    <div>
-        <div class="popupCloseButton">X</div>
-        <p>Add any HTML content<br />inside the popup box!</p>
+
+    <div class="hover_bkgr_fricc" id="hover_bkgr_fricc">
+        <span class="helper"></span>
+        <div>
+            <div class="popupCloseButton" id="popupCloseButton">X</div>
+            <h1>Welcome to LScrabble!</h1>
+            <p>LScrabble is an interactive LSystem that uses Scrabble to generate art. <br>To start the sequence, enter a word below between 1-8 characters, and hit 'ENTER' to start.</p><input type="text" value="Axiom" id="Input">
+            <br><button>ENTER</button>
+        </div>
     </div>
-</div>
 
     <canvas id="mainCanvas"></canvas>
 
@@ -24,20 +27,14 @@
     <script src="lib/Turtle.js"></script>
     <script src="lib/LSystem.js"></script>
     <script src="app.js"></script>
-    
+
     <script>
-    $(window).load(function () {
-    $(".trigger_popup_fricc").click(function(){
-       $('.hover_bkgr_fricc').show();
-    });
-    $('.hover_bkgr_fricc').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
-    $('.popupCloseButton').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
-});
+        window.onload = function() {
+
+
+        };
     </script>
 
 </body>
+
 </html>

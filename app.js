@@ -13,6 +13,9 @@
     let w, h, counter = 0;
     let scale = 1;
     let rotation = 90;
+    let axiom = 'EAXIOM';
+    let Scrabble = false;
+let moveStep = 1;
 
     /* use to update global w and h and reset canvas width/height */
     function updateCanvasSize() {
@@ -22,8 +25,13 @@
         canvas.height = h;
         requestAnimationFrame(draw);
     }
+
+
+
+
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
+
 
     /* SETUP LSYSTEM */
 
@@ -42,6 +50,8 @@
 
     // L-System for this Project
     let grammar = new LSystem;
+
+
 
     class LTree {
         constructor() {
@@ -74,7 +84,7 @@
             this.grammar.addRule('Z', [0, 'ZAP', 1, 'ZEST', 2, 'HAZER', 3, '']);
 
             this.iterations = 5;
-            this.axiom = '';
+            this.axiom = axiom;
             this.counter = 0;
             this.x = randRange(w / 4, w * 3 / 4);
             this.y = randRange(h * 3 / 4, h);
@@ -89,7 +99,9 @@
             this.height = randRange(h / 2, this.y);
             this.rotation = randItem([0, radians(90), radians(180), radians(270)]);
 
+
             let result = this.grammar.generate(this.axiom, this.iterations);
+            console.log(result);
 
             // keep our state stack here that we will push/pop the turtle's state onto
             let stateStack = [];
@@ -118,46 +130,69 @@
                         break;
 
                     case 'E':
+                        let p1 = turtle.pos.copy();
+                        turtle.moveForward(moveStep);
+                        let p2 = turtle.pos.copy();
+                        lines.push([p1, p2]);
+
+                        // use min since we're actually going negative in 
+                        // in our coordinate space
+                        maxY = Math.min(maxY, p2.y);
                         break;
                     case 'A':
+                       angle += radians(15);
                         break;
                     case 'O':
                     case 'T':
+                        angle -= radians(15);
                         break;
                     case 'I':
                     case 'N':
                     case 'R':
+                        // console.log("INR");
                         break;
                     case 'S':
+                        //console.log("S");
                         break;
                     case 'D':
+                        //console.log("D");
                         break;
                     case 'L':
                     case 'U':
+                        // console.log("LU");
                         break;
                     case 'C':
                     case 'M':
+                        // console.log("CM");
                         break;
                     case 'G':
+                        //console.log("G");
                         break;
                     case 'H':
+                        //console.log("H");
                         break;
                     case 'B':
                     case 'P':
+                        // console.log("BP");
                         break;
                     case 'F':
                     case 'W':
                     case 'Y':
+                        //  console.log("FWY");
                         break;
                     case 'V':
+                        // console.log("V");
                         break;
                     case 'K':
+                        // console.log("K");
                         break;
                     case 'J':
                     case 'X':
+                        // console.log("JX");
                         break;
                     case 'Q':
                     case 'Z':
+                        // console.log("QZ");
                         break;
 
                     default:
@@ -224,6 +259,15 @@
         }
     }
 
+    let UpdateAxiom = function () {
+        axiom = document.getElementById("Input").value;
+        document.getElementById("hover_bkgr_fricc").style.display = "none";
+        Scrabble = true;
+
+    };
+
+    window.addEventListener('click', UpdateAxiom);
+
     let trees = Array.from({
         length: 120
     }, () => new LTree())
@@ -238,6 +282,8 @@
 
 
         ctx.save();
+
+
 
         trees.forEach((tree) => {
             tree.draw(ctx);
