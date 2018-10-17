@@ -13,9 +13,20 @@
     let w, h, counter = 0;
     let scale = 1;
     let rotation = 90;
-    let axiom = 'EAXIOM';
+    let axiom = 'BAXIOM';
     let Scrabble = false;
-let moveStep = 1;
+    let moveStep = 1;
+
+    let palette = [["#E70000", "#FF8C00", "#FFEF00", "#00811F", "#0044FF", "#760089"],
+                   ["#FF148C", "#FFDA00", "#05AEFF"],
+                   ["#55CDFC", "#F7A8B8", "#FFFFFF", "#F7A8B8", "#55CDFC"],
+                   ["#a40061", "#b75592", "#ececea", "#c44e55", "#8a1e04"]];
+
+    let paletteNum = 0;
+    let designNum = 0;
+    let ruleNum = 0;
+    let next = 0;
+
 
     /* use to update global w and h and reset canvas width/height */
     function updateCanvasSize() {
@@ -101,7 +112,7 @@ let moveStep = 1;
 
 
             let result = this.grammar.generate(this.axiom, this.iterations);
-            console.log(result);
+            
 
             // keep our state stack here that we will push/pop the turtle's state onto
             let stateStack = [];
@@ -140,59 +151,65 @@ let moveStep = 1;
                         maxY = Math.min(maxY, p2.y);
                         break;
                     case 'A':
-                       angle += radians(15);
+                        angle += radians(15);
+                        turtle.rotate(angle);
                         break;
                     case 'O':
                     case 'T':
                         angle -= radians(15);
+                        turtle.rotate(angle);
                         break;
                     case 'I':
                     case 'N':
                     case 'R':
-                        // console.log("INR");
+                        turtle.moveForward(moveStep);
                         break;
                     case 'S':
-                        //console.log("S");
+                        moveStep++;
+                        if (moveStep > 15) moveStep = 1;
                         break;
                     case 'D':
-                        //console.log("D");
+                        //Anim up step
                         break;
                     case 'L':
                     case 'U':
-                        // console.log("LU");
+                        // anim down step
                         break;
                     case 'C':
                     case 'M':
-                        // console.log("CM");
+                        scale += .0001;
                         break;
                     case 'G':
-                        //console.log("G");
+                        scale -= .01;
                         break;
                     case 'H':
-                        //console.log("H");
+                        turtle.angle = radians(90);
                         break;
                     case 'B':
                     case 'P':
-                        // console.log("BP");
+                        paletteNum++;
+                         console.log("AAAA");
+                        if (paletteNum > 3) paletteNum = 0;
+                       
                         break;
                     case 'F':
                     case 'W':
                     case 'Y':
-                        //  console.log("FWY");
+                        designNum = 0;
                         break;
                     case 'V':
-                        // console.log("V");
+                        designNum = 1;
                         break;
                     case 'K':
-                        // console.log("K");
+                        designNum = 2;
                         break;
                     case 'J':
                     case 'X':
-                        // console.log("JX");
+                        designNum = 3;
                         break;
                     case 'Q':
                     case 'Z':
-                        // console.log("QZ");
+                        ruleNum++;
                         break;
 
                     default:
@@ -224,15 +241,15 @@ let moveStep = 1;
             ctx.translate(this.x, this.y);
             ctx.rotate(this.rotation);
             ctx.scale(1, -1);
+            
+            next += .0005; if(next > palette[paletteNum].length) {next = 0; console.log("aaa")};
 
             let numLines = this.lines.length;
 
             let percent = (1 - (this.counter / numLines));
             let alpha = this.lineColor * percent;
-            let rg = 100 + 100 * percent;
-            let rb = Math.random() * 125 + 125;
-            let rr = rb + 100 * percent - 5;
-            ctx.fillStyle = `rgba(${rg}, ${rb}, ${rr}, ${alpha})`;
+            
+            ctx.fillStyle = palette[paletteNum][Math.floor(next)];
             ctx.lineWidth = this.lineWidth;
 
             let start = Math.max(0, this.counter - this.maxLineSegs)
