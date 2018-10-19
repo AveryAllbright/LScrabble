@@ -1,19 +1,22 @@
-    /*
+
+let LScrabble = (function(Maxiom) {
+
+/*
      * L System via Scrabble (Working Title)
      * By Emma Banks (Working Title)
      */
 
-    const canvas = document.getElementById("mainCanvas");
-    const ctx = mainCanvas.getContext('2d', {
+    let canvas = document.getElementById("mainCanvas");
+    let ctx = mainCanvas.getContext('2d', {
         alpha: false
     });
 
-    const TWO_PI = 2 * Math.PI;
+    let TWO_PI = 2 * Math.PI;
 
     let w, h, counter = 0;
     let scale = 1;
     let rotation = 90;
-    let axiom = 'BAXIOM';
+    let axiom = Maxiom;
     let Scrabble = false;
     let moveStep = 1;
 
@@ -36,8 +39,6 @@
         canvas.height = h;
         requestAnimationFrame(draw);
     }
-
-
 
 
     updateCanvasSize();
@@ -112,7 +113,7 @@
 
 
             let result = this.grammar.generate(this.axiom, this.iterations);
-            
+
 
             // keep our state stack here that we will push/pop the turtle's state onto
             let stateStack = [];
@@ -188,9 +189,9 @@
                     case 'B':
                     case 'P':
                         paletteNum++;
-                         console.log("AAAA");
+                        console.log("AAAA");
                         if (paletteNum > 3) paletteNum = 0;
-                       
+
                         break;
                     case 'F':
                     case 'W':
@@ -241,14 +242,18 @@
             ctx.translate(this.x, this.y);
             ctx.rotate(this.rotation);
             ctx.scale(1, -1);
-            
-            next += .0005; if(next > palette[paletteNum].length) {next = 0; console.log("aaa")};
+
+            next += .0005;
+            if (next > palette[paletteNum].length) {
+                next = 0;
+                console.log("aaa")
+            };
 
             let numLines = this.lines.length;
 
             let percent = (1 - (this.counter / numLines));
             let alpha = this.lineColor * percent;
-            
+
             ctx.fillStyle = palette[paletteNum][Math.floor(next)];
             ctx.lineWidth = this.lineWidth;
 
@@ -276,14 +281,8 @@
         }
     }
 
-    let UpdateAxiom = function () {
-        axiom = document.getElementById("Input").value;
-        document.getElementById("hover_bkgr_fricc").style.display = "none";
-        Scrabble = true;
 
-    };
-
-    window.addEventListener('click', UpdateAxiom);
+   
 
     let trees = Array.from({
         length: 120
@@ -299,7 +298,6 @@
 
 
         ctx.save();
-
 
 
         trees.forEach((tree) => {
@@ -319,3 +317,6 @@
     }
 
     requestAnimationFrame(draw);
+});
+
+ document.getElementById('enter').addEventListener('click', new LScrabble("BAXIOM"));
