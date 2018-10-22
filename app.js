@@ -20,22 +20,19 @@ let LScrabble = (function (Maxiom) {
     let axiom = Maxiom;
     let Scrabble = false;
     let moveStep = 1;
+    let animStep = 120;
 
     let palette = [["#E70000", "#FF8C00", "#FFEF00", "#00811F", "#0044FF", "#760089"],
                    ["#FF148C", "#FFDA00", "#05AEFF"],
                    ["#55CDFC", "#F7A8B8", "#FFFFFF", "#F7A8B8", "#55CDFC"],
                    ["#a40061", "#b75592", "#ececea", "#c44e55", "#8a1e04"]];
 
-    let paletteNum = 0;
+    let paletteNum = 1;
     let designNum = 0;
     let ruleNum = 0;
     let next = 0;
 
-    let tick = 0;
-    let displayOver = ["E", 0, "A", 0, "O, T", 0, "I, N, R", 0, "S", 0, "D", 0, "L, U", 0, "C, M", 0, "G", 0, "H",
-        0, "B, P", 0, "F, W, Y", 0, "V", 0, "K", 0, "J, X", 0, "Q, Z", 0];
-    let Over = false;
-
+   
     /* use to update global w and h and reset canvas width/height */
     function updateCanvasSize() {
         w = window.innerWidth;
@@ -73,31 +70,31 @@ let LScrabble = (function (Maxiom) {
     class LTree {
         constructor() {
             this.grammar = new LSystem();
-            this.grammar.addRule('A', [0, '_NE', 1, '_INE', 2, 'R_INE', 3, 'WHIPJ_CK']);
-            this.grammar.addRule('B', [0, '_EE', 1, '_ARK', 2, '_AJAN', 3, 'JAM_EAUX']);
-            this.grammar.addRule('C', [0, 'I_E', 1, 'MO_K', 2, 'PSY_H', 3, 'SKYJA_KS']);
-            this.grammar.addRule('D', [0, '_IE', 1, 'AI_E', 2, 'AILE_', 3, 'JACK_AWS']);
-            this.grammar.addRule('E', [0, '_AR', 1, 'A_ON', 2, 'ALON_', 3, 'J_JUNITY']);
-            this.grammar.addRule('F', [0, '_IE', 1, '_UNK', 2, 'HE_TY', 3, 'JACK_ISH']);
-            this.grammar.addRule('G', [0, 'A_E', 1, '_ONK', 2, '_ENOA', 3, 'HI_HJACK']);
-            this.grammar.addRule('H', [0, 'T_Y', 1, '_OOK', 2, '_UNKY', 3, '_IJACKED']);
-            this.grammar.addRule('I', [0, 'S_C', 1, 'ED_T', 2, 'RA_SE', 3, 'SK_PJACK']);
-            this.grammar.addRule('J', [0, '_UD', 1, '_UDO', 2, '_OWLS', 3, 'CRACK_AW']);
-            this.grammar.addRule('K', [0, '_HI', 1, 'BAC_', 2, 'CHEC_', 3, '_ICKBACK']);
-            this.grammar.addRule('L', [0, 'A_E', 1, 'A_OE', 2, 'A_IEN', 3, 'F_APJACK']);
-            this.grammar.addRule('M', [0, 'HE_', 1, 'PO_P', 2, 'HU_PH', 3, 'JI_CRACK']);
-            this.grammar.addRule('N', [0, '_YE', 1, 'SEA_', 2, 'ATO_E', 3, 'BA_JAXED']);
-            this.grammar.addRule('O', [0, 'E_N', 1, 'I_TA', 2, '_ILER', 3, 'WAXW_RKS']);
-            this.grammar.addRule('P', [0, 'A_E', 1, 'CHO_', 2, 'EX_EL', 3, 'HEXA_ODY']);
+            this.grammar.addRule('A', [0, 'ANE', 1, 'AINE', 2, 'R_INE', 3, 'WHIPJ_CK']);
+            this.grammar.addRule('B', [0, 'EBE', 1, 'BARK', 2, '_AJAN', 3, 'JAM_EAUX']);
+            this.grammar.addRule('C', [0, 'ICE', 1, 'MOCK', 2, 'PSY_H', 3, 'SKYJA_KS']);
+            this.grammar.addRule('D', [0, 'DIE', 1, 'AIDE', 2, 'AILE_', 3, 'JACK_AWS']);
+            this.grammar.addRule('E', [0, 'EAR', 1, 'AEON', 2, 'ALON_', 3, 'J_JUNITY']);
+            this.grammar.addRule('F', [0, 'FIE', 1, 'FUNK', 2, 'HE_TY', 3, 'JACK_ISH']);
+            this.grammar.addRule('G', [0, 'AGE', 1, 'GONK', 2, '_ENOA', 3, 'HI_HJACK']);
+            this.grammar.addRule('H', [0, 'THE', 1, 'HOOK', 2, '_UNKY', 3, '_IJACKED']);
+            this.grammar.addRule('I', [0, 'SIC', 1, 'EDIT', 2, 'RA_SE', 3, 'SK_PJACK']);
+            this.grammar.addRule('J', [0, 'JUD', 1, 'JUDO', 2, '_OWLS', 3, 'CRACK_AW']);
+            this.grammar.addRule('K', [0, 'KHI', 1, 'BACK', 2, 'CHEC_', 3, '_ICKBACK']);
+            this.grammar.addRule('L', [0, 'ALE', 1, 'ALOE', 2, 'A_IEN', 3, 'F_APJACK']);
+            this.grammar.addRule('M', [0, 'HEM', 1, 'POMP', 2, 'HU_PH', 3, 'JI_CRACK']);
+            this.grammar.addRule('N', [0, 'NET', 1, 'SEAN', 2, 'ATO_E', 3, 'BA_JAXED']);
+            this.grammar.addRule('O', [0, 'EON', 1, 'IOTA', 2, '_ILER', 3, 'WAXW_RKS']);
+            this.grammar.addRule('P', [0, 'APE', 1, 'CHOP', 2, 'EX_EL', 3, 'HEXA_ODY']);
             this.grammar.addRule('Q', [0, '_IS', 1, '_UIT', 2, '_UEEN', 3, '']);
-            this.grammar.addRule('R', [0, 'A_E', 1, 'DA_E', 2, 'ADO_E', 3, 'HIJACKE_']);
-            this.grammar.addRule('S', [0, '_EA', 1, '_ITE', 2, '_AINE', 3, 'JUMBUCK_']);
-            this.grammar.addRule('T', [0, 'A_E', 1, 'EDI_', 2, 'RA_IO', 3, 'MA_CHBOX']);
-            this.grammar.addRule('U', [0, 'R_E', 1, 'B_FF', 2, 'ADIE_', 3, 'H_MMOCKY']);
-            this.grammar.addRule('V', [0, '_IE', 1, 'DI_E', 2, 'WA_ED', 3, 'CON_EXLY']);
-            this.grammar.addRule('W', [0, 'A_E', 1, '_EAK', 2, '_HIFT', 3, 'KAJA_AHS']);
-            this.grammar.addRule('X', [0, 'SI_', 1, 'A_LE', 2, 'VARI_', 3, 'E_OPHAGY']);
-            this.grammar.addRule('Y', [0, 'A_E', 1, 'H_PO', 2, 'MIFF_', 3, 'KEFFI_EH']);
+            this.grammar.addRule('R', [0, 'ARE', 1, 'DARE', 2, 'ADO_E', 3, 'HIJACKE_']);
+            this.grammar.addRule('S', [0, 'SEA', 1, 'SITE', 2, '_AINE', 3, 'JUMBUCK_']);
+            this.grammar.addRule('T', [0, 'ATE', 1, 'EDIT', 2, 'RA_IO', 3, 'MA_CHBOX']);
+            this.grammar.addRule('U', [0, 'RUE', 1, 'BUFF', 2, 'ADIE_', 3, 'H_MMOCKY']);
+            this.grammar.addRule('V', [0, 'VIE', 1, 'DIVE', 2, 'WA_ED', 3, 'CON_EXLY']);
+            this.grammar.addRule('W', [0, 'AWE', 1, 'WEAK', 2, '_HIFT', 3, 'KAJA_AHS']);
+            this.grammar.addRule('X', [0, 'SIX', 1, 'AXLE', 2, 'VARI_', 3, 'E_OPHAGY']);
+            this.grammar.addRule('Y', [0, 'AYE', 1, 'HYPO', 2, 'MIFF_', 3, 'KEFFI_EH']);
             this.grammar.addRule('Z', [0, '_AP', 1, '_EST', 2, 'HA_ER', 3, '']);
 
             this.iterations = 5;
@@ -155,81 +152,81 @@ let LScrabble = (function (Maxiom) {
                         // use min since we're actually going negative in 
                         // in our coordinate space
                         maxY = Math.min(maxY, p2.y);
-                        displayOver[1]++;
+                       
                         break;
                     case 'A':
                         angle += radians(15);
                         turtle.rotate(angle);
-                        displayOver[3]++;
+                        
                         break;
                     case 'O':
                     case 'T':
                         angle -= radians(15);
                         turtle.rotate(angle);
-                        displayOver[5]++;
+                        
                         break;
                     case 'I':
                     case 'N':
                     case 'R':
                         turtle.moveForward(moveStep);
-                        displayOver[7]++;
+                        
                         break;
                     case 'S':
                         moveStep++;
                         if (moveStep > 15) moveStep = 1;
-                        displayOver[9]++;
+                        
                         break;
                     case 'D':
-                        //Anim up step
-                        displayOver[11]++;
+                        animStep++;
+                        
                         break;
                     case 'L':
                     case 'U':
-                        // anim down step
-                        displayOver[13]++;
+                        animStep--;
+                        
                         break;
                     case 'C':
                     case 'M':
                         scale += .0001;
-                        displayOver[15]++;
+                        
                         break;
                     case 'G':
                         scale -= .01;
-                        displayOver[17]++;
+                       
                         break;
                     case 'H':
                         turtle.angle = radians(90);
-                        displayOver[19]++;
+                       
                         break;
                     case 'B':
                     case 'P':
-                        paletteNum++;
+                        paletteNum+= .005;
                         if (paletteNum > 3) paletteNum = 0;
-                        displayOver[21]++;
+                       
                         break;
                     case 'F':
                     case 'W':
                     case 'Y':
                         designNum = 0;
-                        displayOver[23]++;
+                        
                         break;
                     case 'V':
                         designNum = 1;
-                        displayOver[25]++;
+                        
                         break;
                     case 'K':
                         designNum = 2;
-                        displayOver[27]++;
+                        
                         break;
                     case 'J':
                     case 'X':
                         designNum = 3;
-                        displayOver[29]++;
+                       
                         break;
                     case 'Q':
                     case 'Z':
                         ruleNum++;
-                        displayOver[31]++;
+                        
                         break;
 
                     default:
@@ -263,7 +260,7 @@ let LScrabble = (function (Maxiom) {
             ctx.scale(1, -1);
 
             next += .00005;
-            if (next > palette[paletteNum].length) {
+            if (next > palette[Math.floor(paletteNum)].length) {
                 next = 0;
 
             };
@@ -273,8 +270,8 @@ let LScrabble = (function (Maxiom) {
             let percent = (1 - (this.counter / numLines));
             let alpha = this.lineColor * percent;
 
-            ctx.fillStyle = palette[paletteNum][Math.floor(next)];
-            ctx.strokeStyle = palette[paletteNum][Math.floor(next)];
+            ctx.fillStyle = palette[Math.floor(paletteNum)][Math.floor(next)];
+            ctx.strokeStyle = palette[Math.floor(paletteNum)][Math.floor(next)];
             ctx.lineWidth = this.lineWidth;
 
             let start = Math.max(0, this.counter - this.maxLineSegs)
@@ -295,7 +292,7 @@ let LScrabble = (function (Maxiom) {
                     ctx.stroke();
 
                 } else if (designNum == 1) {
-                    ctx.fillRect(line[0].x, line[0].y, line[1].x, line[1].y);
+                    ctx.fillRect(line[0].x, line[0].y, line[1].x * .1, line[1].y * .1);
                     ctx.fill();
 
 
@@ -332,7 +329,7 @@ let LScrabble = (function (Maxiom) {
 
 
     let trees = Array.from({
-        length: 120
+        length: animStep
     }, () => new LTree())
 
     /* MAIN DRAWING CODE */
@@ -358,22 +355,10 @@ let LScrabble = (function (Maxiom) {
         }
 
         ctx.restore();
-        if (!Over) {
-
-            if (tick > 120) {
-                Over = true;
-            }
+       
             requestAnimationFrame(draw);
-        }
+        
 
-        if (Over) {
-            for (let i = 0; i < displayOver.length; i + 2) {
-                console.log(displayOver[i] + " : " + displayOver[i + 1]);
-            }
-            
-        }
-
-        tick++;
     }
 
     requestAnimationFrame(draw);
