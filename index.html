@@ -2,42 +2,50 @@
 <html lang="en">
 
 <head>
-    <title>Emily Irish Dixon : LScrabble</title>
+    <title>LScrabble : Emily Irish Dixon</title>
     <link rel="stylesheet" type="text/css" href="app.css">
-    
-     <script src="lib/Vec2.js"></script>
+
+    <script src="lib/Vec2.js"></script>
     <script src="lib/Turtle.js"></script>
     <script src="lib/LSystem.js"></script>
     <script src="app.js"></script>
     <script>
-    function Helper()
+        function Helper()
         {
             let axiom = document.getElementById("Input").value;
             axiom = axiom.toUpperCase();
+            document.getElementById("Popup").style.display = "none";
             LScrabble(axiom);
-        };
+        };   
+        
+        document.addEventListener("keydown", function(e)
+                              {
+         if(e.code == "Space")
+             {
+                 document.getElementById("Popup").style.display = "block";
+             }
+        if(e.code == "Enter")
+            {
+                Helper();
+            }
+     });        
+    </script>
+    <script>
+
     </script>
 </head>
 
 <body>
-
-
-
-    <div class="hover_bkgr_fricc" id="hover_bkgr_fricc">
+    <div id="Popup">
         <span class="helper"></span>
         <div>
-            <div class="popupCloseButton" id="popupCloseButton">X</div>
             <h1>Welcome to LScrabble!</h1>
-            <p>LScrabble is an interactive LSystem that uses Scrabble to generate art. <br>To start the sequence, enter a word below between 1-8 characters, and hit 'ENTER' to start.</p><input type="text" value="AXIOM" id="Input">
+            <p>LScrabble is an interactive LSystem that uses Scrabble to generate art. <br>To start the sequence, enter a word below between 1-8 characters, and hit the 'ENTER' button below to start. You can hit "Space" at any time if you want to change your starting word.</p><input type="text" value="AXIOM" id="Input">
             <br><button id="enter" onClick="Helper()">ENTER</button>
         </div>
     </div>
 
     <canvas id="mainCanvas"></canvas>
-
-   
-
-
 </body>
 
 </html>

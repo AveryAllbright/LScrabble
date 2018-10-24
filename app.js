@@ -1,11 +1,9 @@
-let LScrabble = (function (Maxiom) {
+let LScrabble = (function (Input) {
 
     /*
      * L System via Scrabble (Working Title)
      * By Emma Banks (Working Title)
      */
-
-
 
     let canvas = document.getElementById("mainCanvas");
     let ctx = mainCanvas.getContext('2d', {
@@ -15,22 +13,21 @@ let LScrabble = (function (Maxiom) {
     let TWO_PI = 2 * Math.PI;
 
     let w, h, counter = 0;
-    let scale = 1;
-    let rotation = 90;
-    let axiom = Maxiom;
-    let Scrabble = false;
-    let moveStep = 1;
-    let animStep = 120;
+    let scale = 1;              //Scaling for shape drawing, base 1
+    let rotation = 90;          //Rotation angle for all rotation calls
+    let axiom = Input;          //Axiom is user defined
+    let moveStep = 1;           //How far to walk. Either creates larger shapes, or larger gaps
+    let animStep = 120;         //Length sizing for animation
 
     let palette = [["#E70000", "#FF8C00", "#FFEF00", "#00811F", "#0044FF", "#760089"],
                    ["#FF148C", "#FFDA00", "#05AEFF"],
                    ["#55CDFC", "#F7A8B8", "#FFFFFF", "#F7A8B8", "#55CDFC"],
                    ["#a40061", "#b75592", "#ececea", "#c44e55", "#8a1e04"]];
 
-    let paletteNum = 1;
-    let designNum = 0;
-    let ruleNum = 0;
-    let next = 0;
+    let paletteNum = 2;         //Used to determine which palette to usee
+    let designNum = 0;          //Used to determine which shape to draw
+    let ruleNum = 0;            //used to determine which rule level to use
+    let next = 0;               //used for cycling through the colours in a palette
 
    
     /* use to update global w and h and reset canvas width/height */
@@ -100,9 +97,9 @@ let LScrabble = (function (Maxiom) {
             this.iterations = 5;
             this.axiom = axiom;
             this.counter = 0;
-            this.x = randRange(w / 4, w * 3 / 4);
+            this.x = randRange(w / 4, w);
             this.y = randRange(h * 3 / 4, h);
-            this.height = randRange(h / 2, this.y);
+            this.height = randRange(this.y, h);
 
             this.regenerate();
         }
@@ -116,10 +113,6 @@ let LScrabble = (function (Maxiom) {
 
             let result = this.grammar.generate(axiom, this.iterations, ruleNum);
 
-
-            // keep our state stack here that we will push/pop the turtle's state onto
-            let stateStack = [];
-
             // keep track of all of our line segments here
             let lines = [];
 
@@ -132,27 +125,13 @@ let LScrabble = (function (Maxiom) {
                 let c = result[i];
 
                 switch (c) {
-                    case '[':
-                        // push a copy our turtle's current state on to the state stack
-                        stateStack.push([turtle.pos.copy(), turtle.angle]);
-                        break;
-                    case ']':
-                        // pop the turtle's state and restore those values to the turtle
-                        let state = stateStack.pop();
-                        turtle.pos = state[0];
-                        turtle.angle = state[1];
-                        break;
-
                     case 'E':
                         let p1 = turtle.pos.copy();
                         turtle.moveForward(moveStep);
                         let p2 = turtle.pos.copy();
                         lines.push([p1, p2]);
-
-                        // use min since we're actually going negative in 
-                        // in our coordinate space
                         maxY = Math.min(maxY, p2.y);
-                       
+                        
                         break;
                     case 'A':
                         angle += radians(15);
@@ -187,11 +166,11 @@ let LScrabble = (function (Maxiom) {
                         break;
                     case 'C':
                     case 'M':
-                        scale += .0001;
+                        scale += .00015;
                         
                         break;
                     case 'G':
-                        scale -= .01;
+                        scale -= .001;
                        
                         break;
                     case 'H':
@@ -200,7 +179,7 @@ let LScrabble = (function (Maxiom) {
                         break;
                     case 'B':
                     case 'P':
-                        paletteNum+= .005;
+                        paletteNum+= 1;
                         if (paletteNum > 3) paletteNum = 0;
                        
                         break;
